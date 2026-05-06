@@ -1,0 +1,61 @@
+﻿@model IEnumerable<SmartStudyPlanner1.Models.StudyTask>
+@{
+    ViewData["Title"] = "Today's Tasks";
+}
+
+<div class="page-header">
+    <h1>✅ Today's Tasks</h1>
+    <p style="color:var(--muted);">@DateTime.Today.ToString("dddd, MMMM dd, yyyy")</p>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="card text-center" style="padding:48px;">
+        <div style="font-size:3rem;">🎉</div>
+        <h4 style="margin-top:12px;">All done for today!</h4>
+        <p style="color:var(--muted);">No tasks scheduled for today.</p>
+    </div>
+}
+else
+{
+    @foreach (var task in Model)
+    {
+        <div class="card" style="margin-bottom:12px;">
+            <div style="display:flex;align-items:center;gap:16px;">
+                <span style="font-size:1.5rem;">@(task.IsCompleted ? "✅" : "📖")</span>
+                <div style="flex:1;">
+                    <div style="font-weight:700;">@task.Chapter?.ChapterTitle</div>
+                    <div style="color:var(--muted);font-size:0.85rem;">@task.Chapter?.Subject?.SubjectName · Plan: @task.StudyPlan?.PlanName</div>
+                </div>
+                <span class="badge-diff-@task.Priority" style="margin-right:12px;">Priority @task.Priority</span>
+                @if (!task.IsCompleted)
+                {
+                    <button onclick="document.getElementById('form-@task.TaskId').style.display='block';this.style.display='none'" class="btn btn-primary" style="font-size:0.85rem;">Mark Complete</button>
+                }
+                else
+                {
+                    <span style="color:var(--success);font-size:0.85rem;font-weight:600;">Completed ✓</span>
+                }
+            </div>
+            @if (!task.IsCompleted)
+            {
+                <div id="form-@task.TaskId" style="display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--surface2);">
+                    <form method="post" action="/StudyTasks/Complete">
+                        <input type="hidden" name="taskId" value="@task.TaskId" />
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Time Spent (hours)</label>
+                                <input type="number" name="timeSpent" step="0.5" min="0" class="form-control" value="1" />
+                            </div>
+                            <div class="col-md-8">
+                                <label class="form-label">Notes</label>
+                                <input type="text" name="notes" class="form-control" placeholder="How did it go?" />
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success mt-3" style="font-size:0.85rem;">✅ Save Progress</button>
+                    </form>
+                </div>
+            }
+        </div>
+    }
+}

@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Add Chapter";
+}
+
+<div class="page-header">
+    <h1>➕ Add Chapter</h1>
+</div>
+
+<div class="card" style="max-width:500px;">
+    <form method="post">
+        <input type="hidden" name="SubjectId" value="@ViewBag.SubjectId" />
+        <div style="color:white" class="mb-3">
+            <label class="form-label">Chapter Title</label>
+            <input type="text" name="ChapterTitle" class="form-control" required />
+        </div>
+        <div class="mb-4">
+            <label class="form-label">Estimated Hours</label>
+            <input type="number" name="EstimatedHours" step="0.5" min="0.5" class="form-control" />
+        </div>
+        <div style="display:flex;gap:12px; color:white">
+            <button type="submit" class="btn btn-primary">Add Chapter</button>
+            <a href="/Subjects/Details/@ViewBag.SubjectId" class="btn" style="background:var(--surface2);color:var(--text);border-radius:10px;padding:10px 24px;">Cancel</a>
+        </div>
+
+
+    </form>
+</div>

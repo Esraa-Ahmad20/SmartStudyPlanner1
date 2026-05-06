@@ -1,0 +1,54 @@
+﻿@model SmartStudyPlanner1.Models.Chapter
+
+@{
+    ViewData["Title"] = "Edit Chapter";
+}
+
+<div class="page-header">
+    <h1>✏️ Edit Chapter</h1>
+</div>
+
+<div class="card" style="max-width:500px; color:white;">
+
+    <form method="post">
+
+        <input type="hidden" name="ChapterId" value="@Model.ChapterId" />
+        <input type="hidden" name="SubjectId" value="@Model.SubjectId" />
+
+        <!-- Chapter Title -->
+        <div class="mb-3">
+            <label class="form-label">Chapter Name</label>
+            <input type="text"
+                   name="ChapterTitle"
+                   value="@Model.ChapterTitle"
+                   class="form-control"
+                   required />
+        </div>
+
+        <!-- Estimated Hours -->
+        <div class="mb-3">
+            <label class="form-label">Estimated Hours</label>
+            <input type="number"
+                   name="EstimatedHours"
+                   value="@Model.EstimatedHours"
+                   class="form-control"
+                   step="0.5"
+                   min="1"
+                   required />
+        </div>
+
+        <!-- Buttons -->
+        <div style="display:flex; gap:12px;">
+            <button type="submit" class="btn btn-primary">
+                Update
+            </button>
+
+            <a href="/Subjects/Details/@Model.SubjectId"
+               class="btn"
+               style="background:var(--surface2);color:white;border-radius:10px;padding:10px 24px;">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+</div>

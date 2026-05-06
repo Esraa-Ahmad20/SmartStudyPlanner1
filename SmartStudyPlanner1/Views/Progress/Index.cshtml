@@ -1,0 +1,33 @@
+﻿@model IEnumerable<SmartStudyPlanner1.Models.Subject>
+@{
+    ViewData["Title"] = "Progress";
+}
+
+<div class="page-header">
+    <h1>📊 Progress Tracker</h1>
+    <p style="color:var(--muted);">Track your completion across all subjects</p>
+</div>
+
+@foreach (var subject in Model)
+{
+    var totalTasks = subject.Chapters?.SelectMany(c => c.StudyTasks ?? new List<SmartStudyPlanner1.Models.StudyTask>()).Count() ?? 0;
+    var doneTasks = subject.Chapters?.SelectMany(c => c.StudyTasks ?? new List<SmartStudyPlanner1.Models.StudyTask>()).Count(t => t.IsCompleted) ?? 0;
+    var pct = totalTasks > 0 ? (int)(doneTasks * 100.0 / totalTasks) : 0;
+    var daysLeft = (subject.ExamDate - DateTime.Today).Days;
+
+    <div class="card" style="margin-bottom:16px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <div>
+                <h5 style="margin:0;font-weight:700;">@subject.SubjectName</h5>
+                <span style="color:var(--muted);font-size:0.82rem;">Exam in @daysLeft days · @(subject.Chapters?.Count ?? 0) chapters</span>
+            </div>
+            <div style="text-align:right;">
+                <div style="font-size:1.8rem;font-weight:700;color:var(--primary);">@pct%</div>
+                <div style="color:var(--muted);font-size:0.78rem;">@doneTasks / @totalTasks tasks</div>
+            </div>
+        </div>
+        <div class="progress" style="height:12px;">
+            <div class="progress-bar" style="width:@pct%;transition:width 0.6s ease;"></div>
+        </div>
+    </div>
+}

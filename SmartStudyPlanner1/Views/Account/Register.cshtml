@@ -1,0 +1,109 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "Register";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Register - Smart Study Planner</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            background: #0f172a;
+            font-family: 'Space Grotesk', sans-serif;
+            color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 420px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6366f1, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .form-control {
+            background: #334155;
+            border: 1px solid #475569;
+            color: #f1f5f9;
+            border-radius: 10px;
+            padding: 12px 16px;
+        }
+
+            .form-control:focus {
+                background: #334155;
+                color: #f1f5f9;
+                border-color: #6366f1;
+                box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+            }
+
+        .form-label {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .btn-reg {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: 700;
+            color: white;
+            width: 100%;
+        }
+
+        .alert-danger {
+            background: rgba(239,68,68,0.15);
+            border-color: #ef4444;
+            color: #ef4444;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="text-center mb-4">
+            <div style="font-size:3rem;">📚</div>
+            <h1>Create Account</h1>
+        </div>
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Error</div>
+        }
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label">Full Name</label>
+                <input type="text" name="FullName" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" name="Email" class="form-control" required />
+            </div>
+            <div class="mb-4">
+                <label class="form-label">Password</label>
+                <input type="password" name="Password" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-reg">Register</button>
+        </form>
+        <p class="text-center mt-3" style="color:#94a3b8;font-size:0.9rem;">
+            Already have an account? <a href="/Account/Login" style="color:#6366f1;">Login</a>
+        </p>
+    </div>
+</body>
+</html>

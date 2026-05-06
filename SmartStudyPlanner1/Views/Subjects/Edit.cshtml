@@ -1,0 +1,49 @@
+﻿@model SmartStudyPlanner1.Models.Subject
+@{
+    ViewData["Title"] = "Edit Subject";
+}
+
+<div class="page-header">
+    <h1>✏️ Edit Subject</h1>
+</div>
+
+<div class="card" style="max-width:500px;">
+    <form method="post">
+
+        <input type="hidden" name="SubjectId" value="@Model.SubjectId" />
+
+        <div class="mb-3">
+            <label class="form-label">Subject Name</label>
+            <input type="text" name="SubjectName"
+                   value="@Model.SubjectName"
+                   class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Difficulty Level</label>
+            <select name="DifficultyLevel" class="form-select">
+                <option value="1" selected="@(Model.DifficultyLevel == 1)">Easy</option>
+                <option value="2" selected="@(Model.DifficultyLevel == 2)">Medium</option>
+                <option value="3" selected="@(Model.DifficultyLevel == 3)">Hard</option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">Exam Date</label>
+            <input type="date" name="ExamDate"
+                   value="@(Model.ExamDate == default ? "" : Model.ExamDate.ToString("yyyy-MM-dd"))"
+                   class="form-control" required />
+        </div>
+
+        <div style="display:flex;gap:12px;">
+            <button type="submit" class="btn btn-primary">Update</button>
+
+            <a href="/Subjects"
+               class="btn"
+               style="background:var(--surface2);color:var(--text);border-radius:10px;padding:10px 24px;">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+</div>

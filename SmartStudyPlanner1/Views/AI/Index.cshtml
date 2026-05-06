@@ -1,0 +1,119 @@
+﻿@{
+    ViewData["Title"] = "AI Chat";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<style>
+    body {
+        background: #0f172a;
+        color: white;
+        font-family: Arial;
+    }
+
+    .chat-container {
+        max-width: 700px;
+        margin: 50px auto;
+        background: #111827;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    .title {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .chat-box {
+        background: #1f2937;
+        padding: 15px;
+        border-radius: 10px;
+        min-height: 200px;
+        margin-bottom: 15px;
+        white-space: pre-wrap;
+    }
+
+    .input-area {
+        display: flex;
+        gap: 10px;
+    }
+
+    input {
+        flex: 1;
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+    }
+
+    button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 10px;
+        background: #3b82f6;
+        color: white;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background: #2563eb;
+        }
+
+    .user {
+        color: #60a5fa;
+        font-weight: bold;
+    }
+
+    .ai {
+        color: #34d399;
+        margin-top: 10px;
+    }
+</style>
+
+<div class="chat-container">
+
+    <div class="title">🤖 AI Study Assistant</div>
+
+    <div id="chatBox" class="chat-box">
+        Start chatting with your AI...
+    </div>
+
+    <div class="input-area">
+        <input id="question" placeholder="Ask something..." />
+        <button onclick="askAI()">Send</button>
+    </div>
+
+</div>
+
+<script>
+    function askAI() {
+        const input = document.getElementById("question");
+        const question = input.value;
+
+        if (!question) return;
+
+        const chatBox = document.getElementById("chatBox");
+
+        // عرض سؤال المستخدم
+        chatBox.innerHTML += "\n\n👤 You: " + question;
+
+        fetch('/Ai/Task', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question: question })
+        })
+        .then(res => res.json())
+        .then(data => {
+
+            chatBox.innerHTML += "\n🤖 AI: " + data.answer;
+
+            // scroll لآخر الرسائل
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+
+        input.value = "";
+    }
+</script>

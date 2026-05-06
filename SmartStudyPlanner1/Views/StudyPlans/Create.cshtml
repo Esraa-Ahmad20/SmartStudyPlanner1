@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Create Plan";
+}
+
+<div class="page-header">
+    <h1>📅 Create Study Plan</h1>
+    <p style="color:var(--muted);">The system will auto-generate tasks for all your chapters</p>
+</div>
+
+<div class="card" style="max-width:500px;">
+    <form method="post">
+        <div class="mb-3">
+            <label class="form-label">Plan Name</label>
+            <input type="text" name="PlanName" class="form-control" placeholder="e.g. Final Exam Plan" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Start Date</label>
+            <input type="date" name="StartDate" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">End Date</label>
+            <input type="date" name="EndDate" class="form-control" required />
+        </div>
+        <div class="mb-4">
+            <label class="form-label">Daily Study Hours</label>
+            <select name="DailyStudyHours" class="form-select">
+                <option value="1">1 hour</option>
+                <option value="2">2 hours</option>
+                <option value="3">3 hours</option>
+                <option value="4">4 hours</option>
+                <option value="6">6 hours</option>
+                <option value="8">8 hours</option>
+            </select>
+        </div>
+        <div style="display:flex;gap:12px;">
+            <button type="submit" class="btn btn-primary">Generate Plan</button>
+            <a href="/StudyPlans" class="btn" style="background:var(--surface2);color:var(--text);border-radius:10px;padding:10px 24px;">Cancel</a>
+        </div>
+    </form>
+</div>

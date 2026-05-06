@@ -1,0 +1,55 @@
+﻿@model IEnumerable<SmartStudyPlanner1.Models.Subject>
+@{
+    ViewData["Title"] = "Subjects";
+}
+
+<div class="page-header d-flex justify-content-between align-items-center">
+    <div>
+        <h1>📖 My Subjects</h1>
+        <p style="color:white;">Manage your courses and chapters</p>
+    </div>
+    <a href="/Subjects/Create" class="btn btn-primary">+ Add Subject</a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="card text-center" style="padding:48px;">
+        <div style="font-size:3rem;margin-bottom:12px; color:white;">📚</div>
+        <h4>No subjects yet</h4>
+        <p style="color:white;">Add your first subject to get started</p>
+        <a href="/Subjects/Create" class="btn btn-primary mt-3">Add Subject</a>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var subject in Model)
+        {
+            var daysLeft = (subject.ExamDate - DateTime.Today).Days;
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+                        <h5 style="font-weight:700;margin:0;color:white">@subject.SubjectName</h5>
+                        <span class="badge-diff-@subject.DifficultyLevel">
+                            @(subject.DifficultyLevel == 1 ? "Easy" : subject.DifficultyLevel == 2 ? "Medium" : "Hard")
+                        </span>
+                    </div>
+                    <div style="color:var(--muted);font-size:0.85rem;margin-bottom:8px;">
+                        📅 Exam: @subject.ExamDate.ToString("MMM dd, yyyy")
+                    </div>
+                    <div style="font-size:0.85rem;margin-bottom:8px;color:@(daysLeft < 7 ? "var(--danger)" : daysLeft < 14 ? "var(--warning)" : "var(--success)");">
+                        ⏳ @daysLeft days remaining
+                    </div>
+                    <div style="color:white;font-size:0.85rem;margin-bottom:16px;">
+                        📑 @(subject.Chapters?.Count ?? 0) chapters
+                    </div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <a href="/Subjects/Details/@subject.SubjectId" class="btn btn-primary" style="padding:6px 14px;font-size:0.82rem;">View</a>
+                        <a href="/Subjects/Edit/@subject.SubjectId" class="btn" style="background:var(--surface2);color:var(--text);border-radius:8px;padding:6px 14px;font-size:0.82rem;">Edit</a>
+                        <a href="/Subjects/Delete/@subject.SubjectId" class="btn btn-danger" style="font-size:0.82rem;" onclick="return confirm('Delete this subject?')">Delete</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

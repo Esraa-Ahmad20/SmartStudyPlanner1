@@ -1,0 +1,52 @@
+﻿@model SmartStudyPlanner1.Models.Resource
+
+@{
+    ViewData["Title"] = "Edit Resource";
+}
+
+<div class="page-header">
+    <h1>✏️ Edit Resource</h1>
+</div>
+
+<div class="card" style="max-width:500px; color:white;">
+
+    <form method="post">
+
+        <input type="hidden" name="ResourceId" value="@Model.ResourceId" />
+        <input type="hidden" name="SubjectId" value="@Model.SubjectId" />
+
+        <!-- Title -->
+        <div class="mb-3">
+            <label class="form-label">Title</label>
+            <input type="text"
+                   name="Title"
+                   value="@Model.Title"
+                   class="form-control"
+                   required />
+        </div>
+
+        <!-- Link -->
+        <div class="mb-3">
+            <label class="form-label">Link (URL)</label>
+            <input type="url"
+                   name="Link"
+                   value="@Model.Link"
+                   class="form-control"
+                   placeholder="https://..." />
+        </div>
+
+        <!-- Buttons -->
+        <div style="display:flex; gap:12px;">
+            <button type="submit" class="btn btn-primary">
+                Update
+            </button>
+
+            <a href="/Resources/Index?subjectId=@Model.SubjectId"
+               class="btn"
+               style="background:var(--surface2);color:white;border-radius:10px;padding:10px 24px;">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+</div>

@@ -1,0 +1,72 @@
+﻿@model SmartStudyPlanner1.Models.Subject
+@{
+    ViewData["Title"] = "Subject Details";
+}
+
+<div class="page-header d-flex justify-content-between align-items-center">
+    <div>
+        <h1>📖 @Model.SubjectName</h1>
+        <p style="color:var(--muted);">Exam: @Model.ExamDate.ToString("MMMM dd, yyyy") · @((Model.ExamDate - DateTime.Today).Days) days left</p>
+    </div>
+    <div style="display:flex;gap:10px;">
+        <a href="/Chapters/Create?subjectId=@Model.SubjectId" class="btn btn-primary">+ Add Chapter</a>
+        <a href="/Resources/Index?subjectId=@Model.SubjectId" class="btn" style="background:var(--surface2);color:var(--text);border-radius:10px;padding:10px 24px;">Resources</a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-8">
+        <div class="card">
+            <h5 style="margin-bottom:16px;">📑 Chapters (@(Model.Chapters?.Count ?? 0))</h5>
+            @if (Model.Chapters == null || !Model.Chapters.Any())
+            {
+                <p style="color:var(--muted);text-align:center;padding:20px;">No chapters yet. Add your first chapter!</p>
+            }
+            else
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Chapter</th>
+                            <th>Est. Hours</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var chapter in Model.Chapters)
+                        {
+                            <tr>
+                                <td>@chapter.ChapterTitle</td>
+                                <td>@chapter.EstimatedHours h</td>
+                                <td style="display:flex;gap:6px;">
+                                    <a href="/Chapters/Edit/@chapter.ChapterId" class="btn btn-warning" style="font-size:0.78rem;padding:4px 10px;">Edit</a>
+                                    <a href="/Chapters/Delete/@chapter.ChapterId" class="btn btn-danger" style="font-size:0.78rem;padding:4px 10px;" onclick="return confirm('Delete chapter?')">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <h5 style="margin-bottom:16px;">ℹ️ Info</h5>
+            <div style="margin-bottom:12px;">
+                <div style="color:var(--muted);font-size:0.8rem;">Difficulty</div>
+                <span class="badge-diff-@Model.DifficultyLevel">
+                    @(Model.DifficultyLevel == 1 ? "Easy" : Model.DifficultyLevel == 2 ? "Medium" : "Hard")
+                </span>
+            </div>
+            <div style="margin-bottom:12px;">
+                <div style="color:var(--muted);font-size:0.8rem;">Total Chapters</div>
+                <div style="font-weight:700;font-size:1.3rem;">@(Model.Chapters?.Count ?? 0)</div>
+            </div>
+            <div>
+                <div style="color:var(--muted);font-size:0.8rem;">Est. Total Hours</div>
+                <div style="font-weight:700;font-size:1.3rem;">@(Model.Chapters?.Sum(c => c.EstimatedHours) ?? 0) h</div>
+            </div>
+        </div>
+    </div>
+</div>
+

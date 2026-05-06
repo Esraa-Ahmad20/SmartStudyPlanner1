@@ -1,0 +1,47 @@
+﻿@model SmartStudyPlanner1.Models.StudyPlan
+@{
+    ViewData["Title"] = "Plan Details";
+}
+
+<div class="page-header">
+    <h1>📅 @Model.PlanName</h1>
+    <p style="color:var(--muted);">@Model.StartDate?.ToString("MMM dd") → @Model.EndDate?.ToString("MMM dd, yyyy") · @Model.DailyStudyHours h/day</p>
+</div>
+
+<div class="card">
+    <h5 style="margin-bottom:16px;">📋 All Tasks</h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Chapter</th>
+                <th>Subject</th>
+                <th>Status</th>
+                <th>Priority</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var task in Model.StudyTasks?.OrderBy(t => t.ScheduledDate) ?? Enumerable.Empty<SmartStudyPlanner1.Models.StudyTask>())
+            {
+                <tr>
+                    <td style="font-size:0.85rem;">@task.ScheduledDate.ToString("MMM dd")</td>
+                    <td style="font-size:0.85rem;">@task.Chapter?.ChapterTitle</td>
+                    <td style="font-size:0.85rem;">@task.Chapter?.Subject?.SubjectName</td>
+                    <td>
+                        @if (task.IsCompleted)
+                        {
+                            <span style="color:var(--success);font-size:0.82rem;">✅ Done</span>
+                        }
+                        else
+                        {
+                            <span style="color:var(--warning);font-size:0.82rem;">⏳ Pending</span>
+                        }
+                    </td>
+                    <td>
+                        <span class="badge-diff-@task.Priority" style="font-size:0.75rem;">P@task.Priority</span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
