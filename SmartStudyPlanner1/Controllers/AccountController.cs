@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using SmartStudyPlanner1.Data;
 using SmartStudyPlanner1.Models;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace SmartStudyPlanner1.Controllers
 {
@@ -8,6 +10,13 @@ namespace SmartStudyPlanner1.Controllers
     {
         private readonly AppDbContext _db;
         public AccountController(AppDbContext db) { _db = db; }
+
+        private string HashPassword(string password)
+        {
+            using var sha256 = SHA256.Create();
+            var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+            return Convert.ToHexString(bytes).ToLower();
+        }
 
         public IActionResult Login()
         {
@@ -19,7 +28,8 @@ namespace SmartStudyPlanner1.Controllers
         [HttpPost]
         public IActionResult Login(string email, string password)
         {
-            var user = _db.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
+            var hashed = HashPassword(password);
+            var user = _db.Users.FirstOrDefault(u => u.Email == email && u.Password == hashed);
             if (user == null)
             {
                 ViewBag.Error = "Invalid email or password";
@@ -37,9 +47,10 @@ namespace SmartStudyPlanner1.Controllers
         {
             if (_db.Users.Any(u => u.Email == user.Email))
             {
-                ViewBag.Error = "Email already exists";
+                ViewBag.Error = "Email already exists. Please use a different email.";
                 return View();
             }
+            user.Password = HashPassword(user.Password);
             _db.Users.Add(user);
             _db.SaveChanges();
             return RedirectToAction("Login");
