@@ -1,0 +1,73 @@
+@model SmartStudyPlanner1.Models.StudyPlan
+@{
+    ViewData["Title"] = "Edit Plan";
+}
+
+<div class="page-header">
+    <h1>✏️ Edit Study Plan</h1>
+    <p style="color:var(--muted);">Update your plan details</p>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <form method="post" action="/StudyPlans/Edit/@Model.PlanId">
+
+                <div style="margin-bottom:20px;">
+                    <label style="color:var(--muted);font-size:0.85rem;margin-bottom:6px;display:block;">
+                        📌 Plan Name
+                    </label>
+                    <input name="PlanName"
+                           value="@Model.PlanName"
+                           class="form-control"
+                           required
+                           style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:white;border-radius:8px;padding:10px 14px;" />
+                </div>
+
+                <div style="margin-bottom:20px;">
+                    <label style="color:var(--muted);font-size:0.85rem;margin-bottom:6px;display:block;">
+                        📅 Start Date
+                    </label>
+                    <input name="StartDate"
+                           type="date"
+                           value="@Model.StartDate?.ToString("yyyy-MM-dd")"
+                           class="form-control"
+                           style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:white;border-radius:8px;padding:10px 14px;" />
+                </div>
+
+                <div style="margin-bottom:20px;">
+                    <label style="color:var(--muted);font-size:0.85rem;margin-bottom:6px;display:block;">
+                        🏁 End Date
+                    </label>
+                    <input name="EndDate"
+                           type="date"
+                           value="@Model.EndDate?.ToString("yyyy-MM-dd")"
+                           class="form-control"
+                           style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:white;border-radius:8px;padding:10px 14px;" />
+                </div>
+
+                <div style="margin-bottom:28px;">
+                    <label style="color:var(--muted);font-size:0.85rem;margin-bottom:6px;display:block;">
+                        ⏰ Daily Study Hours
+                    </label>
+                    <input name="DailyStudyHours"
+                           type="number"
+                           min="1" max="12"
+                           value="@Model.DailyStudyHours"
+                           class="form-control"
+                           style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:white;border-radius:8px;padding:10px 14px;" />
+                </div>
+
+                <div style="display:flex;gap:10px;">
+                    <button type="submit" class="btn btn-primary" style="flex:1;">
+                        💾 Save Changes
+                    </button>
+                    <a href="/StudyPlans" class="btn btn-secondary" style="flex:1;text-align:center;">
+                        ✕ Cancel
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
