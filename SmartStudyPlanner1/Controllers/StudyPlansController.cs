@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SmartStudyPlanner1.Data;
 using SmartStudyPlanner1.Models;
@@ -48,17 +48,14 @@ namespace SmartStudyPlanner1.Controllers
 
             plan.UserId = GetUserId();
 
-            // 1️⃣ احفظي البلان الأول
             _db.StudyPlans.Add(plan);
-            _db.SaveChanges(); // هنا PlanId بيتولد صح
+            _db.SaveChanges();
 
-            // 2️⃣ بعد الحفظ اعملي tasks
             GenerateTasks(plan.PlanId, plan.StartDate, plan.EndDate, plan.UserId);
 
             return RedirectToAction("Index");
         }
 
-        // 🔥 تعديل مهم: بقى بياخد PlanId صريح
         private void GenerateTasks(int planId, DateTime? start, DateTime? end, int userId)
         {
             if (start == null || end == null) return;
@@ -122,6 +119,64 @@ namespace SmartStudyPlanner1.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        [Route("Edit/{id}")]
+        public IActionResult Edit(int id)
+        {
+            if (GetUserId() == 0)
+                return RedirectToAction("Login", "Account");
+
+            var plan = _db.StudyPlans.FirstOrDefault(p => p.PlanId == id && p.UserId == GetUserId());
+            if (plan == null) return NotFound();
+
+            return View(plan);
+        }
+
+        [HttpPost]
+        [Route("Edit/{id}")]
+        public IActionResult Edit(int id, StudyPlan updated)
+        {
+            if (GetUserId() == 0)
+                return RedirectToAction("Login", "Account");
+
+            var plan = _db.StudyPlans.FirstOrDefault(p => p.PlanId == id && p.UserId == GetUserId());
+            if (plan == null) return NotFound();
+
+            plan.PlanName = updated.PlanName;
+            plan.StartDate = updated.StartDate;
+            plan.EndDate = updated.EndDate;
+            plan.DailyStudyHours = updated.DailyStudyHours;
+
+            _db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [Route("UpdatePriority")]
+        public IActionResult UpdatePriority([FromBody] UpdatePriorityRequest request)
+        {
+            if (GetUserId() == 0)
+                return Json(new { success = false });
+
+            var task = _db.StudyTasks
+                .Include(t => t.StudyPlan)
+                .FirstOrDefault(t => t.TaskId == request.TaskId && t.StudyPlan!.UserId == GetUserId());
+
+            if (task == null)
+                return Json(new { success = false });
+
+            task.Priority = request.Priority;
+            _db.SaveChanges();
+
+            return Json(new { success = true });
+        }
+
+        public class UpdatePriorityRequest
+        {
+            public int TaskId { get; set; }
+            public int Priority { get; set; }
         }
     }
 }
