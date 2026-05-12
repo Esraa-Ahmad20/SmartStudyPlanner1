@@ -1,4 +1,4 @@
-﻿@model SmartStudyPlanner1.Models.StudyPlan
+@model SmartStudyPlanner1.Models.StudyPlan
 @{
     ViewData["Title"] = "Plan Details";
 }
@@ -9,8 +9,30 @@
 </div>
 
 <div class="card">
-    <h5 style="margin-bottom:16px;">📋 All Tasks</h5>
-    <table class="table">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h5 style="margin:0;">📋 All Tasks</h5>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button onclick="filterTasks('all')" id="btn-all" class="btn btn-primary"
+                    style="padding:5px 14px;font-size:0.8rem;">
+                All
+            </button>
+            <button onclick="filterTasks('1')" id="btn-1" class="btn btn-secondary"
+                    style="padding:5px 14px;font-size:0.8rem;">
+                🔴 High
+            </button>
+            <button onclick="filterTasks('2')" id="btn-2" class="btn btn-secondary"
+                    style="padding:5px 14px;font-size:0.8rem;">
+                🟡 Medium
+            </button>
+            <button onclick="filterTasks('3')" id="btn-3" class="btn btn-secondary"
+                    style="padding:5px 14px;font-size:0.8rem;">
+                🟢 Low
+            </button>
+        </div>
+    </div>
+
+    <table class="table" id="tasksTable">
         <thead>
             <tr>
                 <th>Date</th>
@@ -23,7 +45,7 @@
         <tbody>
             @foreach (var task in Model.StudyTasks?.OrderBy(t => t.ScheduledDate) ?? Enumerable.Empty<SmartStudyPlanner1.Models.StudyTask>())
             {
-                <tr>
+                <tr data-priority="@task.Priority">
                     <td style="font-size:0.85rem;">@task.ScheduledDate.ToString("MMM dd")</td>
                     <td style="font-size:0.85rem;">@task.Chapter?.ChapterTitle</td>
                     <td style="font-size:0.85rem;">@task.Chapter?.Subject?.SubjectName</td>
@@ -38,10 +60,87 @@
                         }
                     </td>
                     <td>
-                        <span class="badge-diff-@task.Priority" style="font-size:0.75rem;">P@task.Priority</span>
+                        <select onchange="updatePriority(@task.TaskId, this)"
+                                style="background:rgba(255,255,255,0.05);
+                            border:1px solid rgba(255,255,255,0.1);
+                            color:white;
+                            border-radius:20px;
+                            padding:3px 10px;
+                            font-size:0.78rem;
+                            cursor:pointer;">
+                            @if (task.Priority == 1)
+                            {
+                                <option value="1" selected>🔴 High</option>
+                                <option value="2">🟡 Medium</option>
+                                <option value="3">🟢 Low</option>
+                            }
+                            else if (task.Priority == 2)
+                            {
+                                <option value="1">🔴 High</option>
+                                <option value="2" selected>🟡 Medium</option>
+                                <option value="3">🟢 Low</option>
+                            }
+                            else
+                            {
+                                <option value="1">🔴 High</option>
+                                <option value="2">🟡 Medium</option>
+                                <option value="3" selected>🟢 Low</option>
+                            }
+                        </select>
+                        <span id="saved-@task.TaskId"
+                              style="display:none;color:var(--success);font-size:0.75rem;margin-left:4px;">
+                            ✓ Saved
+                        </span>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+
+    <div id="noResults" style="display:none;text-align:center;padding:24px;color:var(--muted);">
+        No tasks found for this priority.
+    </div>
 </div>
+
+<script>
+    function updatePriority(taskId, selectEl) {
+        const priority = parseInt(selectEl.value);
+        selectEl.closest('tr').dataset.priority = priority;
+
+        fetch('/StudyPlans/UpdatePriority', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ taskId, priority })
+        })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    const saved = document.getElementById('saved-' + taskId);
+                    saved.style.display = 'inline';
+                    setTimeout(() => saved.style.display = 'none', 2000);
+                }
+            });
+    }
+
+    function filterTasks(priority) {
+        const rows = document.querySelectorAll('#tasksTable tbody tr');
+        let visible = 0;
+
+        rows.forEach(row => {
+            if (priority === 'all' || row.dataset.priority === priority) {
+                row.style.display = '';
+                visible++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+
+        ['all', '1', '2', '3'].forEach(p => {
+            const btn = document.getElementById('btn-' + p);
+            btn.className = p === priority ? 'btn btn-primary' : 'btn btn-secondary';
+            btn.style.cssText = 'padding:5px 14px;font-size:0.8rem;';
+        });
+    }
+</script>
