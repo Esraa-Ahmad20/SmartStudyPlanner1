@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SmartStudyPlanner1.Models.StudyPlan>
+@model IEnumerable<SmartStudyPlanner1.Models.StudyPlan>
 @{
     ViewData["Title"] = "Study Plans";
 }
@@ -24,7 +24,6 @@ else
     <div class="row g-4">
         @foreach (var plan in Model)
         {
-            // ✅ مهم جدًا: حماية من null + تأكد إن Tasks محمّلة
             var tasks = plan.StudyTasks ?? new List<SmartStudyPlanner1.Models.StudyTask>();
 
             var total = tasks.Count;
@@ -60,6 +59,12 @@ else
                            class="btn btn-primary"
                            style="padding:6px 14px;font-size:0.82rem;">
                             View
+                        </a>
+
+                        <a href="/StudyPlans/Edit/@plan.PlanId"
+                           class="btn btn-secondary"
+                           style="padding:6px 14px;font-size:0.82rem;">
+                            ✏️ Edit
                         </a>
 
                         <a href="/StudyPlans/Delete/@plan.PlanId"
