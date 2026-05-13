@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SmartStudyPlanner1.Models.Subject>
+@model IEnumerable<SmartStudyPlanner1.Models.Subject>
 @{
     ViewData["Title"] = "Progress";
 }
@@ -18,12 +18,12 @@
     <div class="card" style="margin-bottom:16px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
             <div>
-                <h5 style="margin:0;font-weight:700;">@subject.SubjectName</h5>
-                <span style="color:var(--muted);font-size:0.82rem;">Exam in @daysLeft days · @(subject.Chapters?.Count ?? 0) chapters</span>
+                <h5 style="margin:0;font-weight:700;color:white;">@subject.SubjectName</h5>
+                <span style="color:#cbd5e1;font-size:0.82rem;">Exam in @daysLeft days · @(subject.Chapters?.Count ?? 0) chapters</span>
             </div>
             <div style="text-align:right;">
                 <div style="font-size:1.8rem;font-weight:700;color:var(--primary);">@pct%</div>
-                <div style="color:var(--muted);font-size:0.78rem;">@doneTasks / @totalTasks tasks</div>
+                <div style="color:#cbd5e1;font-size:0.78rem;">@doneTasks / @totalTasks tasks</div>
             </div>
         </div>
         <div class="progress" style="height:12px;">
