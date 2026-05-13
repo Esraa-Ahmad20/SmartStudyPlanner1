@@ -19,9 +19,9 @@
         </div>
     </div>
 
-    <table class="table" id="tasksTable">
-        <thead>
-            <tr>
+    <table class="table" id="tasksTable" style="background:var(--surface);">
+        <thead style="background:var(--surface);">
+            <tr style="background:var(--surface);">
                 <th>Date</th>
                 <th>Chapter</th>
                 <th>Subject</th>
@@ -32,7 +32,7 @@
         <tbody>
             @foreach (var task in Model.StudyTasks?.OrderBy(t => t.ScheduledDate) ?? Enumerable.Empty<SmartStudyPlanner1.Models.StudyTask>())
             {
-                <tr data-priority="@task.Priority">
+                <tr data-priority="@task.Priority" style="background:var(--surface);">
                     <td style="font-size:0.85rem;color:white;">@task.ScheduledDate.ToString("MMM dd")</td>
                     <td style="font-size:0.85rem;color:white;">@task.Chapter?.ChapterTitle</td>
                     <td style="font-size:0.85rem;color:#cbd5e1;">@task.Chapter?.Subject?.SubjectName</td>
