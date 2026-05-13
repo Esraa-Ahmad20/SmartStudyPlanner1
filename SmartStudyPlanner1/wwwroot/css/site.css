@@ -1,22 +1,32 @@
-html {
-  font-size: 14px;
+.table {
+    background: #0f172a !important;
+    color: white !important;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.table thead {
+    background: #1e293b !important;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.table thead th {
+    background: #1e293b !important;
+    color: white !important;
+    border-color: rgba(255,255,255,0.08) !important;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+.table tbody tr {
+    background: #0f172a !important;
 }
 
-body {
-  margin-bottom: 60px;
+.table tbody td {
+    background: #0f172a !important;
+    color: white !important;
+    border-color: rgba(255,255,255,0.08) !important;
+}
+
+.table tbody tr:hover {
+    background: #172554 !important;
+}
+
+.table tbody tr:hover td {
+    background: #172554 !important;
 }
