@@ -1,60 +1,172 @@
 @model SmartStudyPlanner1.Models.StudyPlan
+
 @{
     ViewData["Title"] = "Plan Details";
 }
 
 <div class="page-header">
-    <h1>📅 @Model.PlanName</h1>
-    <p style="color:#cbd5e1;">@Model.StartDate?.ToString("MMM dd") → @Model.EndDate?.ToString("MMM dd, yyyy") · @Model.DailyStudyHours h/day</p>
+    <h1 style="color:white;">📅 @Model.PlanName</h1>
+
+    <p style="color:#cbd5e1;">
+        @Model.StartDate?.ToString("MMM dd")
+        →
+        @Model.EndDate?.ToString("MMM dd, yyyy")
+        ·
+        @Model.DailyStudyHours h/day
+    </p>
 </div>
 
-<div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-        <h5 style="margin:0;color:white;">📋 All Tasks</h5>
+<div class="card"
+     style="
+        background:#111827;
+        border-radius:20px;
+        padding:20px;
+        border:1px solid rgba(255,255,255,0.08);
+     ">
+
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:16px;
+        flex-wrap:wrap;
+        gap:10px;
+    ">
+
+        <h5 style="margin:0;color:white;">
+            📋 All Tasks
+        </h5>
+
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button onclick="filterTasks('all')" id="btn-all" class="btn btn-primary" style="padding:5px 14px;font-size:0.8rem;">All</button>
-            <button onclick="filterTasks('1')" id="btn-1" class="btn btn-secondary" style="padding:5px 14px;font-size:0.8rem;color:white;">🔴 High</button>
-            <button onclick="filterTasks('2')" id="btn-2" class="btn btn-secondary" style="padding:5px 14px;font-size:0.8rem;color:white;">🟡 Medium</button>
-            <button onclick="filterTasks('3')" id="btn-3" class="btn btn-secondary" style="padding:5px 14px;font-size:0.8rem;color:white;">🟢 Low</button>
+
+            <button onclick="filterTasks('all')"
+                    id="btn-all"
+                    class="btn btn-primary"
+                    style="
+                        padding:5px 14px;
+                        font-size:0.8rem;
+                        border-radius:10px;
+                    ">
+                All
+            </button>
+
+            <button onclick="filterTasks('1')"
+                    id="btn-1"
+                    class="btn"
+                    style="
+                        background:#dc2626;
+                        color:white;
+                        padding:5px 14px;
+                        font-size:0.8rem;
+                        border-radius:10px;
+                    ">
+                🔴 High
+            </button>
+
+            <button onclick="filterTasks('2')"
+                    id="btn-2"
+                    class="btn"
+                    style="
+                        background:#d97706;
+                        color:white;
+                        padding:5px 14px;
+                        font-size:0.8rem;
+                        border-radius:10px;
+                    ">
+                🟡 Medium
+            </button>
+
+            <button onclick="filterTasks('3')"
+                    id="btn-3"
+                    class="btn"
+                    style="
+                        background:#16a34a;
+                        color:white;
+                        padding:5px 14px;
+                        font-size:0.8rem;
+                        border-radius:10px;
+                    ">
+                🟢 Low
+            </button>
+
         </div>
     </div>
 
-    <table class="table" id="tasksTable" style="background:var(--surface);">
-        <thead style="background:var(--surface);">
-            <tr style="background:var(--surface);">
-                <th>Date</th>
-                <th>Chapter</th>
-                <th>Subject</th>
-                <th>Status</th>
-                <th>Priority</th>
+    <table class="table"
+           id="tasksTable"
+           style="
+                background:#0f172a;
+                color:white;
+                border-radius:16px;
+                overflow:hidden;
+           ">
+
+        <thead style="background:#1e293b;color:white;">
+
+            <tr style="background:#1e293b;color:white;">
+
+                <th style="color:white;">Date</th>
+                <th style="color:white;">Chapter</th>
+                <th style="color:white;">Subject</th>
+                <th style="color:white;">Status</th>
+                <th style="color:white;">Priority</th>
+
             </tr>
+
         </thead>
+
         <tbody>
-            @foreach (var task in Model.StudyTasks?.OrderBy(t => t.ScheduledDate) ?? Enumerable.Empty<SmartStudyPlanner1.Models.StudyTask>())
+
+            @foreach (var task in Model.StudyTasks?.OrderBy(t => t.ScheduledDate)
+           ?? Enumerable.Empty<SmartStudyPlanner1.Models.StudyTask>())
             {
-                <tr data-priority="@task.Priority" style="background:var(--surface);">
-                    <td style="font-size:0.85rem;color:white;">@task.ScheduledDate.ToString("MMM dd")</td>
-                    <td style="font-size:0.85rem;color:white;">@task.Chapter?.ChapterTitle</td>
-                    <td style="font-size:0.85rem;color:#cbd5e1;">@task.Chapter?.Subject?.SubjectName</td>
+                <tr data-priority="@task.Priority"
+                    style="
+                        background:#0f172a;
+                        color:white;
+                        border-bottom:1px solid rgba(255,255,255,0.06);
+                    ">
+
+                    <td style="color:white;">
+                        @task.ScheduledDate.ToString("MMM dd")
+                    </td>
+
+                    <td style="color:white;">
+                        @task.Chapter?.ChapterTitle
+                    </td>
+
+                    <td style="color:#cbd5e1;">
+                        @task.Chapter?.Subject?.SubjectName
+                    </td>
+
                     <td>
                         @if (task.IsCompleted)
                         {
-                            <span style="color:var(--success);font-size:0.82rem;">✅ Done</span>
+                            <span style="color:#22c55e;">
+                                ✅ Done
+                            </span>
                         }
                         else
                         {
-                            <span style="color:var(--warning);font-size:0.82rem;">⏳ Pending</span>
+                            <span style="color:#facc15;">
+                                ⏳ Pending
+                            </span>
                         }
                     </td>
+
                     <td>
+
                         <select onchange="updatePriority(@task.TaskId, this)"
-                                style="background:rgba(255,255,255,0.05);
-                                border:1px solid rgba(255,255,255,0.1);
-                                color:white;
-                                border-radius:20px;
-                                padding:3px 10px;
-                                font-size:0.78rem;
-                                cursor:pointer;">
+                                style="
+                                    background:#1e293b;
+                                    border:1px solid rgba(255,255,255,0.1);
+                                    color:white;
+                                    border-radius:10px;
+                                    padding:6px 10px;
+                                    font-size:0.8rem;
+                                    cursor:pointer;
+                                ">
+
                             @if (task.Priority == 1)
                             {
                                 <option value="1" selected>🔴 High</option>
@@ -73,25 +185,45 @@
                                 <option value="2">🟡 Medium</option>
                                 <option value="3" selected>🟢 Low</option>
                             }
+
                         </select>
+
                         <span id="saved-@task.TaskId"
-                              style="display:none;color:var(--success);font-size:0.75rem;margin-left:4px;">
+                              style="
+                                    display:none;
+                                    color:#22c55e;
+                                    font-size:0.75rem;
+                                    margin-left:4px;
+                              ">
                             ✓ Saved
                         </span>
+
                     </td>
+
                 </tr>
             }
+
         </tbody>
     </table>
 
-    <div id="noResults" style="display:none;text-align:center;padding:24px;color:#cbd5e1;">
+    <div id="noResults"
+         style="
+            display:none;
+            text-align:center;
+            padding:24px;
+            color:#cbd5e1;
+         ">
         No tasks found for this priority.
     </div>
+
 </div>
 
 <script>
+
     function updatePriority(taskId, selectEl) {
+
         const priority = parseInt(selectEl.value);
+
         selectEl.closest('tr').dataset.priority = priority;
 
         fetch('/StudyPlans/UpdatePriority', {
@@ -99,35 +231,42 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ taskId, priority })
         })
-            .then(r => r.json())
-            .then(data => {
-                if (data.success) {
-                    const saved = document.getElementById('saved-' + taskId);
-                    saved.style.display = 'inline';
-                    setTimeout(() => saved.style.display = 'none', 2000);
-                }
-            });
+        .then(r => r.json())
+        .then(data => {
+
+            if (data.success) {
+
+                const saved = document.getElementById('saved-' + taskId);
+
+                saved.style.display = 'inline';
+
+                setTimeout(() => saved.style.display = 'none', 2000);
+            }
+        });
     }
 
     function filterTasks(priority) {
+
         const rows = document.querySelectorAll('#tasksTable tbody tr');
+
         let visible = 0;
 
         rows.forEach(row => {
+
             if (priority === 'all' || row.dataset.priority === priority) {
+
                 row.style.display = '';
+
                 visible++;
+
             } else {
+
                 row.style.display = 'none';
             }
         });
 
-        document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
-
-        ['all', '1', '2', '3'].forEach(p => {
-            const btn = document.getElementById('btn-' + p);
-            btn.className = p === priority ? 'btn btn-primary' : 'btn btn-secondary';
-            btn.style.cssText = 'padding:5px 14px;font-size:0.8rem;color:white;';
-        });
+        document.getElementById('noResults').style.display =
+            visible === 0 ? 'block' : 'none';
     }
+
 </script>
