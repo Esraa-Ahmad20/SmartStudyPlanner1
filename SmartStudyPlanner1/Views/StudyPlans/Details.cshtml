@@ -5,30 +5,17 @@
 
 <div class="page-header">
     <h1>📅 @Model.PlanName</h1>
-    <p style="color:var(--muted);">@Model.StartDate?.ToString("MMM dd") → @Model.EndDate?.ToString("MMM dd, yyyy") · @Model.DailyStudyHours h/day</p>
+    <p style="color:#cbd5e1;">@Model.StartDate?.ToString("MMM dd") → @Model.EndDate?.ToString("MMM dd, yyyy") · @Model.DailyStudyHours h/day</p>
 </div>
 
 <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-        <h5 style="margin:0;">📋 All Tasks</h5>
-
+        <h5 style="margin:0;color:white;">📋 All Tasks</h5>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button onclick="filterTasks('all')" id="btn-all" class="btn btn-primary"
-                    style="padding:5px 14px;font-size:0.8rem;">
-                All
-            </button>
-            <button onclick="filterTasks('1')" id="btn-1" class="btn btn-secondary"
-                    style="padding:5px 14px;font-size:0.8rem;">
-                🔴 High
-            </button>
-            <button onclick="filterTasks('2')" id="btn-2" class="btn btn-secondary"
-                    style="padding:5px 14px;font-size:0.8rem;">
-                🟡 Medium
-            </button>
-            <button onclick="filterTasks('3')" id="btn-3" class="btn btn-secondary"
-                    style="padding:5px 14px;font-size:0.8rem;">
-                🟢 Low
-            </button>
+            <button onclick="filterTasks('all')" id="btn-all" class="btn btn-primary" style="padding:5px 14px;font-size:0.8rem;">All</button>
+            <button onclick="filterTasks('1')" id="btn-1" class="btn btn-secondary" style="padding:5px 14px;font-size:0.8rem;color:white;">🔴 High</button>
+            <button onclick="filterTasks('2')" id="btn-2" class="btn btn-secondary" style="padding:5px 14px;font-size:0.8rem;color:white;">🟡 Medium</button>
+            <button onclick="filterTasks('3')" id="btn-3" class="btn btn-secondary" style="padding:5px 14px;font-size:0.8rem;color:white;">🟢 Low</button>
         </div>
     </div>
 
@@ -46,9 +33,9 @@
             @foreach (var task in Model.StudyTasks?.OrderBy(t => t.ScheduledDate) ?? Enumerable.Empty<SmartStudyPlanner1.Models.StudyTask>())
             {
                 <tr data-priority="@task.Priority">
-                    <td style="font-size:0.85rem;">@task.ScheduledDate.ToString("MMM dd")</td>
-                    <td style="font-size:0.85rem;">@task.Chapter?.ChapterTitle</td>
-                    <td style="font-size:0.85rem;">@task.Chapter?.Subject?.SubjectName</td>
+                    <td style="font-size:0.85rem;color:white;">@task.ScheduledDate.ToString("MMM dd")</td>
+                    <td style="font-size:0.85rem;color:white;">@task.Chapter?.ChapterTitle</td>
+                    <td style="font-size:0.85rem;color:#cbd5e1;">@task.Chapter?.Subject?.SubjectName</td>
                     <td>
                         @if (task.IsCompleted)
                         {
@@ -62,12 +49,12 @@
                     <td>
                         <select onchange="updatePriority(@task.TaskId, this)"
                                 style="background:rgba(255,255,255,0.05);
-                            border:1px solid rgba(255,255,255,0.1);
-                            color:white;
-                            border-radius:20px;
-                            padding:3px 10px;
-                            font-size:0.78rem;
-                            cursor:pointer;">
+                                border:1px solid rgba(255,255,255,0.1);
+                                color:white;
+                                border-radius:20px;
+                                padding:3px 10px;
+                                font-size:0.78rem;
+                                cursor:pointer;">
                             @if (task.Priority == 1)
                             {
                                 <option value="1" selected>🔴 High</option>
@@ -97,7 +84,7 @@
         </tbody>
     </table>
 
-    <div id="noResults" style="display:none;text-align:center;padding:24px;color:var(--muted);">
+    <div id="noResults" style="display:none;text-align:center;padding:24px;color:#cbd5e1;">
         No tasks found for this priority.
     </div>
 </div>
@@ -140,7 +127,7 @@
         ['all', '1', '2', '3'].forEach(p => {
             const btn = document.getElementById('btn-' + p);
             btn.className = p === priority ? 'btn btn-primary' : 'btn btn-secondary';
-            btn.style.cssText = 'padding:5px 14px;font-size:0.8rem;';
+            btn.style.cssText = 'padding:5px 14px;font-size:0.8rem;color:white;';
         });
     }
 </script>
