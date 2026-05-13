@@ -1,71 +1,256 @@
 @model SmartStudyPlanner1.Models.Subject
+
 @{
     ViewData["Title"] = "Subject Details";
 }
 
 <div class="page-header d-flex justify-content-between align-items-center">
+
     <div>
+
         <h1>📖 @Model.SubjectName</h1>
-        <p style="color:#cbd5e1;">Exam: @Model.ExamDate.ToString("MMMM dd, yyyy") · @((Model.ExamDate - DateTime.Today).Days) days left</p>
+
+        <p style="color:#cbd5e1;">
+            Exam: @Model.ExamDate.ToString("MMMM dd, yyyy")
+            ·
+            @((Model.ExamDate - DateTime.Today).Days) days left
+        </p>
+
     </div>
+
     <div style="display:flex;gap:10px;">
-        <a href="/Chapters/Create?subjectId=@Model.SubjectId" class="btn btn-primary">+ Add Chapter</a>
-        <a href="/Resources/Index?subjectId=@Model.SubjectId" class="btn" style="background:var(--surface2);color:white;border-radius:10px;padding:10px 24px;">Resources</a>
+
+        <a href="/Chapters/Create?subjectId=@Model.SubjectId"
+           class="btn btn-primary">
+            + Add Chapter
+        </a>
+
+        <a href="/Resources/Index?subjectId=@Model.SubjectId"
+           class="btn"
+           style="
+                background:#334155;
+                color:white;
+                border-radius:10px;
+                padding:10px 24px;
+           ">
+            Resources
+        </a>
+
     </div>
+
 </div>
 
 <div class="row g-4">
+
+    <!-- Chapters -->
     <div class="col-md-8">
-        <div class="card">
-            <h5 style="margin-bottom:16px;color:white;">📑 Chapters (@(Model.Chapters?.Count ?? 0))</h5>
+
+        <div class="card"
+             style="
+                background:#111827;
+                border-radius:20px;
+                padding:20px;
+                border:1px solid rgba(255,255,255,0.08);
+             ">
+
+            <h5 style="margin-bottom:16px;color:white;">
+                📑 Chapters (@(Model.Chapters?.Count ?? 0))
+            </h5>
+
             @if (Model.Chapters == null || !Model.Chapters.Any())
             {
-                <p style="color:#cbd5e1;text-align:center;padding:20px;">No chapters yet. Add your first chapter!</p>
+                <p style="
+                    color:#cbd5e1;
+                    text-align:center;
+                    padding:20px;
+                ">
+                    No chapters yet. Add your first chapter!
+                </p>
             }
             else
             {
-                <table class="table">
-                    <thead>
+
+                <table class="table"
+                       style="
+                            background:#0f172a;
+                            color:white;
+                            border-radius:12px;
+                            overflow:hidden;
+                       ">
+
+                    <thead style="background:#1e293b;">
+
                         <tr>
-                            <th>Chapter</th>
-                            <th>Est. Hours</th>
-                            <th>Action</th>
+
+                            <th style="
+                                    background:#1e293b;
+                                    color:white;
+                                    border-color:rgba(255,255,255,0.08);
+                               ">
+                                Chapter
+                            </th>
+
+                            <th style="
+                                    background:#1e293b;
+                                    color:white;
+                                    border-color:rgba(255,255,255,0.08);
+                               ">
+                                Est. Hours
+                            </th>
+
+                            <th style="
+                                    background:#1e293b;
+                                    color:white;
+                                    border-color:rgba(255,255,255,0.08);
+                               ">
+                                Action
+                            </th>
+
                         </tr>
+
                     </thead>
+
                     <tbody>
+
                         @foreach (var chapter in Model.Chapters)
                         {
-                            <tr>
-                                <td style="color:white;">@chapter.ChapterTitle</td>
-                                <td style="color:#cbd5e1;">@(chapter.EstimatedHours.HasValue ?((decimal)chapter.EstimatedHours).ToString("0.##") + " h" : "-")</td>
-                                <td style="display:flex;gap:6px;">
-                                    <a href="/Chapters/Edit/@chapter.ChapterId" class="btn btn-warning" style="font-size:0.78rem;padding:4px 10px;">Edit</a>
-                                    <a href="/Chapters/Delete/@chapter.ChapterId" class="btn btn-danger" style="font-size:0.78rem;padding:4px 10px;" onclick="return confirm('Delete chapter?')">Delete</a>
+
+                            <tr style="background:#0f172a;">
+
+                                <td style="
+                                        background:#0f172a;
+                                        color:white;
+                                        border-color:rgba(255,255,255,0.08);
+                                   ">
+                                    @chapter.ChapterTitle
                                 </td>
+
+                                <td style="
+                                        background:#0f172a;
+                                        color:#cbd5e1;
+                                        border-color:rgba(255,255,255,0.08);
+                                   ">
+                                    @(chapter.EstimatedHours.HasValue
+                                        ? ((decimal)chapter.EstimatedHours).ToString("0.##") + " h"
+                                        : "-")
+                                </td>
+
+                                <td style="
+                                        background:#0f172a;
+                                        border-color:rgba(255,255,255,0.08);
+                                        display:flex;
+                                        gap:6px;
+                                   ">
+
+                                    <a href="/Chapters/Edit/@chapter.ChapterId"
+                                       class="btn btn-warning"
+                                       style="
+                                            font-size:0.78rem;
+                                            padding:4px 10px;
+                                       ">
+                                        Edit
+                                    </a>
+
+                                    <a href="/Chapters/Delete/@chapter.ChapterId"
+                                       class="btn btn-danger"
+                                       style="
+                                            font-size:0.78rem;
+                                            padding:4px 10px;
+                                       "
+                                       onclick="return confirm('Delete chapter?')">
+                                        Delete
+                                    </a>
+
+                                </td>
+
                             </tr>
                         }
+
                     </tbody>
+
                 </table>
             }
+
         </div>
+
     </div>
+
+    <!-- Info -->
     <div class="col-md-4">
-        <div class="card">
-            <h5 style="margin-bottom:16px;color:white;">ℹ️ Info</h5>
+
+        <div class="card"
+             style="
+                background:#111827;
+                border-radius:20px;
+                padding:20px;
+                border:1px solid rgba(255,255,255,0.08);
+             ">
+
+            <h5 style="margin-bottom:16px;color:white;">
+                ℹ️ Info
+            </h5>
+
             <div style="margin-bottom:12px;">
-                <div style="color:#cbd5e1;font-size:0.8rem;">Difficulty</div>
+
+                <div style="
+                    color:#cbd5e1;
+                    font-size:0.8rem;
+                ">
+                    Difficulty
+                </div>
+
                 <span class="badge-diff-@Model.DifficultyLevel">
-                    @(Model.DifficultyLevel == 1 ? "Easy" : Model.DifficultyLevel == 2 ? "Medium" : "Hard")
+
+                    @(Model.DifficultyLevel == 1
+                        ? "Easy"
+                        : Model.DifficultyLevel == 2
+                            ? "Medium"
+                            : "Hard")
+
                 </span>
+
             </div>
+
             <div style="margin-bottom:12px;">
-                <div style="color:#cbd5e1;font-size:0.8rem;">Total Chapters</div>
-                <div style="font-weight:700;font-size:1.3rem;color:white;">@(Model.Chapters?.Count ?? 0)</div>
+
+                <div style="
+                    color:#cbd5e1;
+                    font-size:0.8rem;
+                ">
+                    Total Chapters
+                </div>
+
+                <div style="
+                    font-weight:700;
+                    font-size:1.3rem;
+                    color:white;
+                ">
+                    @(Model.Chapters?.Count ?? 0)
+                </div>
+
             </div>
+
             <div>
-                <div style="color:#cbd5e1;font-size:0.8rem;">Est. Total Hours</div>
-                <div style="font-weight:700;font-size:1.3rem;color:white;">@(Model.Chapters?.Sum(c => c.EstimatedHours) ?? 0) h</div>
+
+                <div style="
+                    color:#cbd5e1;
+                    font-size:0.8rem;
+                ">
+                    Est. Total Hours
+                </div>
+
+                <div style="
+                    font-weight:700;
+                    font-size:1.3rem;
+                    color:white;
+                ">
+                    @(Model.Chapters?.Sum(c => c.EstimatedHours) ?? 0) h
+                </div>
+
             </div>
+
         </div>
+
     </div>
+
 </div>
