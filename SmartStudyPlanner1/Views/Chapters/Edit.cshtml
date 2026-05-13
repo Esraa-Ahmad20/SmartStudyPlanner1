@@ -1,14 +1,21 @@
-﻿@model SmartStudyPlanner1.Models.Chapter
+@model SmartStudyPlanner1.Models.Chapter
 
 @{
     ViewData["Title"] = "Edit Chapter";
 }
 
 <div class="page-header">
-    <h1>✏️ Edit Chapter</h1>
+    <h1 style="color:white;">✏️ Edit Chapter</h1>
 </div>
 
-<div class="card" style="max-width:500px; color:white;">
+<div class="card shadow-lg p-4"
+     style="
+        max-width:500px;
+        background:#16213e;
+        border:1px solid rgba(255,255,255,0.08);
+        border-radius:20px;
+        color:white;
+     ">
 
     <form method="post">
 
@@ -16,38 +23,77 @@
         <input type="hidden" name="SubjectId" value="@Model.SubjectId" />
 
         <!-- Chapter Title -->
-        <div class="mb-3">
-            <label class="form-label">Chapter Name</label>
+        <div class="mb-4">
+            <label class="form-label fw-bold mb-2"
+                   style="color:#e2e8f0;">
+                Chapter Name
+            </label>
+
             <input type="text"
                    name="ChapterTitle"
                    value="@Model.ChapterTitle"
                    class="form-control"
-                   required />
+                   required
+                   style="
+                        background:#0f172a;
+                        color:white;
+                        border:1px solid #334155;
+                        border-radius:12px;
+                        padding:12px;
+                   " />
         </div>
 
         <!-- Estimated Hours -->
-        <div class="mb-3">
-            <label class="form-label">Estimated Hours</label>
+        <div class="mb-4">
+            <label class="form-label fw-bold mb-2"
+                   style="color:#e2e8f0;">
+                Estimated Hours
+            </label>
+
             <input type="number"
                    name="EstimatedHours"
                    value="@Model.EstimatedHours"
                    class="form-control"
                    step="0.5"
                    min="1"
-                   required />
+                   required
+                   style="
+                        background:#0f172a;
+                        color:white;
+                        border:1px solid #334155;
+                        border-radius:12px;
+                        padding:12px;
+                   " />
         </div>
 
         <!-- Buttons -->
         <div style="display:flex; gap:12px;">
-            <button type="submit" class="btn btn-primary">
+
+            <button type="submit"
+                    class="btn"
+                    style="
+                        background:#7c3aed;
+                        color:white;
+                        border:none;
+                        border-radius:12px;
+                        padding:10px 24px;
+                        font-weight:600;
+                    ">
                 Update
             </button>
 
             <a href="/Subjects/Details/@Model.SubjectId"
                class="btn"
-               style="background:var(--surface2);color:white;border-radius:10px;padding:10px 24px;">
+               style="
+                    background:#334155;
+                    color:white;
+                    border-radius:12px;
+                    padding:10px 24px;
+                    font-weight:600;
+               ">
                 Cancel
             </a>
+
         </div>
 
     </form>
