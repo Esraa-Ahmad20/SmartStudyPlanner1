@@ -1,15 +1,15 @@
-﻿@model IEnumerable<SmartStudyPlanner1.Models.Resource>
+@model IEnumerable<SmartStudyPlanner1.Models.Resource>
 @{
     ViewData["Title"] = "Resources";
 }
 
 <div class="page-header d-flex justify-content-between align-items-center">
     <h1>📎 Resources</h1>
-    <a href="/Subjects/Details/@ViewBag.SubjectId" class="btn" style="background:var(--surface2);color:var(--text);border-radius:10px;padding:10px 24px;">← Back</a>
+    <a href="/Subjects/Details/@ViewBag.SubjectId" class="btn" style="background:var(--surface2);color:white;border-radius:10px;padding:10px 24px;">← Back</a>
 </div>
 
 <div class="card" style="max-width:500px;margin-bottom:24px;">
-    <h5 style="margin-bottom:16px;color:white">Add Resource</h5>
+    <h5 style="margin-bottom:16px;color:white;">Add Resource</h5>
     <form method="post" action="/Resources/Create">
         <input type="hidden" name="SubjectId" value="@ViewBag.SubjectId" />
         <div class="mb-3">
@@ -25,10 +25,10 @@
 </div>
 
 <div class="card">
-    <h5 style="margin-bottom:16px;">All Resources</h5>
+    <h5 style="margin-bottom:16px;color:white;">All Resources</h5>
     @if (!Model.Any())
     {
-        <p style="color:var(--muted);text-align:center;padding:20px;">No resources yet.</p>
+        <p style="color:#cbd5e1;text-align:center;padding:20px;">No resources yet.</p>
     }
     else
     {
@@ -37,14 +37,14 @@
             <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--surface2);">
                 <span>🔗</span>
                 <div style="flex:1;">
-                    <div style="font-weight:600;font-size:0.9rem;">@r.Title</div>
+                    <div style="font-weight:600;font-size:0.9rem;color:white;">@r.Title</div>
                     @if (!string.IsNullOrEmpty(r.Link))
                     {
                         <a href="@r.Link" target="_blank" style="color:var(--primary);font-size:0.8rem;">@r.Link</a>
                     }
                 </div>
                 <div style="display:flex;gap:6px;">
-                    <a href="/Resources/Edit/@r.ResourceId" class="btn" style="font-size:0.78rem;padding:4px 10px;background:var(--surface2);color:var(--text);border-radius:8px;">Edit</a>
+                    <a href="/Resources/Edit/@r.ResourceId" class="btn" style="font-size:0.78rem;padding:4px 10px;background:var(--surface2);color:white;border-radius:8px;">Edit</a>
                     <a href="/Resources/Delete/@r.ResourceId" class="btn btn-danger" style="font-size:0.78rem;padding:4px 10px;" onclick="return confirm('Delete?')">Delete</a>
                 </div>
             </div>
