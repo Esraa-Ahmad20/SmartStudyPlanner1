@@ -5,7 +5,10 @@
 }
 
 <div class="page-header">
-    <h1 style="color:white;">📅 @Model.PlanName</h1>
+
+    <h1 style="color:white;">
+        📅 @Model.PlanName
+    </h1>
 
     <p style="color:#cbd5e1;">
         @Model.StartDate?.ToString("MMM dd")
@@ -14,6 +17,7 @@
         ·
         @Model.DailyStudyHours h/day
     </p>
+
 </div>
 
 <div class="card"
@@ -24,6 +28,7 @@
         border:1px solid rgba(255,255,255,0.08);
      ">
 
+    <!-- Header -->
     <div style="
         display:flex;
         justify-content:space-between;
@@ -37,6 +42,7 @@
             📋 All Tasks
         </h5>
 
+        <!-- Filter Buttons -->
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
 
             <button onclick="filterTasks('all')"
@@ -90,26 +96,62 @@
             </button>
 
         </div>
+
     </div>
 
+    <!-- TABLE -->
     <table class="table"
            id="tasksTable"
            style="
-                background:#0f172a;
-                color:white;
+                background:#0f172a !important;
+                color:white !important;
                 border-radius:16px;
                 overflow:hidden;
            ">
 
-        <thead style="background:#1e293b;color:white;">
+        <thead>
 
-            <tr style="background:#1e293b;color:white;">
+            <tr style="background:#1e293b !important;">
 
-                <th style="color:white;">Date</th>
-                <th style="color:white;">Chapter</th>
-                <th style="color:white;">Subject</th>
-                <th style="color:white;">Status</th>
-                <th style="color:white;">Priority</th>
+                <th style="
+                        background:#1e293b !important;
+                        color:white !important;
+                        border-color:rgba(255,255,255,0.08);
+                   ">
+                    Date
+                </th>
+
+                <th style="
+                        background:#1e293b !important;
+                        color:white !important;
+                        border-color:rgba(255,255,255,0.08);
+                   ">
+                    Chapter
+                </th>
+
+                <th style="
+                        background:#1e293b !important;
+                        color:white !important;
+                        border-color:rgba(255,255,255,0.08);
+                   ">
+                    Subject
+                </th>
+
+                <th style="
+                        background:#1e293b !important;
+                        color:white !important;
+                        border-color:rgba(255,255,255,0.08);
+                   ">
+                    Status
+                </th>
+
+                <th style="
+                        background:#1e293b !important;
+                        color:white !important;
+                        border-color:rgba(255,255,255,0.08);
+                   ">
+                    Priority
+                </th>
 
             </tr>
 
@@ -120,26 +162,41 @@
             @foreach (var task in Model.StudyTasks?.OrderBy(t => t.ScheduledDate)
            ?? Enumerable.Empty<SmartStudyPlanner1.Models.StudyTask>())
             {
+
                 <tr data-priority="@task.Priority"
                     style="
-                        background:#0f172a;
-                        color:white;
-                        border-bottom:1px solid rgba(255,255,255,0.06);
+                        background:#0f172a !important;
                     ">
 
-                    <td style="color:white;">
+                    <td style="
+                            background:#0f172a !important;
+                            color:white !important;
+                            border-color:rgba(255,255,255,0.08);
+                       ">
                         @task.ScheduledDate.ToString("MMM dd")
                     </td>
 
-                    <td style="color:white;">
+                    <td style="
+                            background:#0f172a !important;
+                            color:white !important;
+                            border-color:rgba(255,255,255,0.08);
+                       ">
                         @task.Chapter?.ChapterTitle
                     </td>
 
-                    <td style="color:#cbd5e1;">
+                    <td style="
+                            background:#0f172a !important;
+                            color:#cbd5e1 !important;
+                            border-color:rgba(255,255,255,0.08);
+                       ">
                         @task.Chapter?.Subject?.SubjectName
                     </td>
 
-                    <td>
+                    <td style="
+                            background:#0f172a !important;
+                            border-color:rgba(255,255,255,0.08);
+                       ">
+
                         @if (task.IsCompleted)
                         {
                             <span style="color:#22c55e;">
@@ -152,9 +209,13 @@
                                 ⏳ Pending
                             </span>
                         }
+
                     </td>
 
-                    <td>
+                    <td style="
+                            background:#0f172a !important;
+                            border-color:rgba(255,255,255,0.08);
+                       ">
 
                         <select onchange="updatePriority(@task.TaskId, this)"
                                 style="
@@ -204,8 +265,10 @@
             }
 
         </tbody>
+
     </table>
 
+    <!-- Empty -->
     <div id="noResults"
          style="
             display:none;
