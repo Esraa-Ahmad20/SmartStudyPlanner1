@@ -3,70 +3,57 @@ using SmartStudyPlanner1.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// =======================
-// Controllers + Views
-// =======================
 builder.Services.AddControllersWithViews();
 
-// =======================
-// Database (MySQL)
-// =======================
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-// =======================
-// ?? HttpClient (IMPORTANT FIX)
-// =======================
 builder.Services.AddHttpClient();
 
-// =======================
-// Session
-// =======================
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromHours(2);
     options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
 });
 
-// =======================
-// Http Context Accessor
-// =======================
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
-// =======================
-// Exception handling
-// =======================
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
 
-// =======================
-// Middleware pipeline
-// =======================
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseSession();
-
 app.UseAuthorization();
 
-// =======================
-// Default Route
-// =======================
+// Middleware لحماية كل الصفحات
+app.Use(async (context, next) =>
+{
+    var path = context.Request.Path.Value?.ToLower() ?? "";
+    var publicPaths = new[] { "/account/login", "/account/register" };
+    var isPublic = publicPaths.Any(p => path.StartsWith(p));
+
+    if (!isPublic && context.Session.GetInt32("UserId") == null)
+    {
+        context.Response.Redirect("/Account/Login");
+        return;
+    }
+
+    await next();
+});
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");
 
-// =======================
-// Controllers routing (??? ?? ???? Attribute Routing ?? /Ai)
-// =======================
 app.MapControllers();
 
 app.Run();
